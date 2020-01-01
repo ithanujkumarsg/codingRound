@@ -1,24 +1,34 @@
 import com.sun.javafx.PlatformUtil;
+
+import java.util.Iterator;
+import java.util.Set;
+import java.util.concurrent.TimeUnit;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.Assert;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
 public class SignInTest {
 
-    WebDriver driver = new ChromeDriver();
-
+	WebDriver driver;
+	
     @Test
-    public void shouldThrowAnErrorIfSignInDetailsAreMissing() {
-
-        setDriverPath();
-
-        driver.get("https://www.cleartrip.com/");
-        waitFor(2000);
-
+    public void SignIn_NoCredentialsSupplied_VerifyErrorThrown(){
+    	
+    	setDriverPath();
+    	driver = new ChromeDriver();
+    	driver.manage().timeouts().implicitlyWait(5000, TimeUnit.MILLISECONDS);
+    	driver.get("https://www.cleartrip.com/");
+        driver.manage().window().maximize();
+        
         driver.findElement(By.linkText("Your trips")).click();
         driver.findElement(By.id("SignIn")).click();
+        driver.switchTo().frame(1);
 
         driver.findElement(By.id("signInButton")).click();
 

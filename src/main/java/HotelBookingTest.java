@@ -3,13 +3,15 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.Select;
+import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
 public class HotelBookingTest {
 
-    WebDriver driver = new ChromeDriver();
-
+    WebDriver driver;
+    
     @FindBy(linkText = "Hotels")
     private WebElement hotelLink;
 
@@ -23,12 +25,18 @@ public class HotelBookingTest {
     private WebElement travellerSelection;
 
     @Test
-    public void shouldBeAbleToSearchForHotels() {
-        setDriverPath();
+    public void SearchHotel_SubmitAllDetails_VerifyAbleToSearchHotel() {
+       
+    	setDriverPath();
+	    driver = new ChromeDriver();
+	    
+    	PageFactory.initElements(driver, this);
 
         driver.get("https://www.cleartrip.com/");
         hotelLink.click();
+        waitFor(2000);
 
+        
         localityTextBox.sendKeys("Indiranagar, Bangalore");
 
         new Select(travellerSelection).selectByVisibleText("1 room, 2 adults");
@@ -47,6 +55,14 @@ public class HotelBookingTest {
         }
         if (PlatformUtil.isLinux()) {
             System.setProperty("webdriver.chrome.driver", "chromedriver_linux");
+        }
+    }
+    
+    private void waitFor(int durationInMilliSeconds) {
+        try {
+            Thread.sleep(durationInMilliSeconds);
+        } catch (InterruptedException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         }
     }
 
